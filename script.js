@@ -21,12 +21,12 @@ const sections = document.querySelectorAll('section');
 const navLinks = document.querySelectorAll('header nav a');
 
 window.onscroll = () => {
-  const scrollY = window.scrollY;
+  let scrollY = window.scrollY;
 
   sections.forEach(section => {
-    const offset = section.offsetTop - 150;
-    const height = section.offsetHeight;
-    const id = section.getAttribute('id');
+    let offset = section.offsetTop - 150;
+    let height = section.offsetHeight;
+    let id = section.getAttribute('id');
 
     if (scrollY >= offset && scrollY < offset + height) {
       navLinks.forEach(link => {
@@ -46,48 +46,27 @@ window.onscroll = () => {
 
 // ===================== Animate on Scroll (AOS) =====================
 AOS.init({
-  duration: 1200,
+  duration: 1000,
   once: true,
   easing: "ease-in-out"
 });
 
-// ===================== GSAP Animations =====================
+// ===================== GSAP Intro Animations =====================
 window.addEventListener('load', () => {
-  // Page Loader Animation
-  gsap.to(".preloader", { opacity: 0, duration: 1, delay: 1, onComplete: () => {
-    document.querySelector(".preloader").style.display = "none";
-  }});
-
-  // Intro Animations
-  gsap.from('.home-content h1', { opacity: 0, y: -50, duration: 1 });
-  gsap.from('.home-content h3', { opacity: 0, x: -100, delay: 0.4, duration: 1 });
+  gsap.from('.home-content h1', { opacity: 0, y: -40, duration: 1 });
+  gsap.from('.home-content h3', { opacity: 0, x: -60, delay: 0.4, duration: 1 });
   gsap.from('.home-content p', { opacity: 0, y: 30, delay: 0.8, duration: 1 });
-  gsap.from('.home-img img', { opacity: 0, scale: 0.8, delay: 1.2, duration: 1.2 });
-
-  // Section Stagger Reveal
-  gsap.utils.toArray("section").forEach((section, i) => {
-    gsap.from(section.querySelectorAll("h2, p, .btn, .project-box"), {
-      opacity: 0,
-      y: 50,
-      stagger: 0.2,
-      duration: 1,
-      scrollTrigger: {
-        trigger: section,
-        start: "top 80%",
-        toggleActions: "play none none reverse"
-      }
-    });
-  });
+  gsap.from('.home-img img', { opacity: 0, scale: 0.9, delay: 1.2, duration: 1.2 });
 });
 
-// ===================== Hover Animations =====================
-const projectCards = document.querySelectorAll(".project-box");
-projectCards.forEach(card => {
-  card.addEventListener("mouseenter", () => {
-    gsap.to(card, { scale: 1.05, duration: 0.3, boxShadow: "0 8px 25px rgba(0,0,0,0.2)" });
+// ===================== Hover Animations (Cards & Buttons) =====================
+const hoverItems = document.querySelectorAll(".project-box, .btn");
+hoverItems.forEach(item => {
+  item.addEventListener("mouseenter", () => {
+    gsap.to(item, { scale: 1.05, duration: 0.3, boxShadow: "0 8px 20px rgba(0,0,0,0.15)" });
   });
-  card.addEventListener("mouseleave", () => {
-    gsap.to(card, { scale: 1, duration: 0.3, boxShadow: "0 4px 15px rgba(0,0,0,0.1)" });
+  item.addEventListener("mouseleave", () => {
+    gsap.to(item, { scale: 1, duration: 0.3, boxShadow: "0 4px 10px rgba(0,0,0,0.08)" });
   });
 });
 
@@ -102,10 +81,3 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// ===================== Dark Mode Toggle =====================
-const themeToggle = document.querySelector('#theme-toggle');
-themeToggle?.addEventListener("click", () => {
-  document.body.classList.toggle("dark-mode");
-  themeToggle.classList.toggle("fa-sun");
-  themeToggle.classList.toggle("fa-moon");
-});
